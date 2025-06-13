@@ -1,12 +1,12 @@
 import { Plus } from "lucide-react";
-// import { ViewToggle } from "./ViewToggle";
+import { ViewOptions } from "./ViewOptions";
 
 export const Header = ({ onCreateTask }) => {
   return (
     <div className="flex justify-between items-center mb-8">
       <div className="flex items-center gap-4">
         <h1 className="text-3xl font-bold text-gray-900">Task Manager</h1>
-        {/* <ViewToggle /> */}
+        <ViewOptions />
       </div>
       <button
         onClick={onCreateTask}
