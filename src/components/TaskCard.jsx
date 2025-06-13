@@ -44,14 +44,14 @@ export const TaskCard = ({ task, compact = false }) => {
 };
 
 const TaskActions = ({ task, compact = false }) => {
-  const { onEdit, onDelete } = useTaskContext();
+  const { handleEditClick, onDelete } = useTaskContext();
   const iconSize = compact ? "w-3 h-3" : "w-4 h-4";
   const buttonClass = compact ? "text-gray-400 p-1" : "text-gray-400";
 
   return (
     <div className="flex gap-2 ml-2">
       <button
-        onClick={() => onEdit(task)}
+        onClick={() => handleEditClick(task)}
         className={`${buttonClass} hover:text-blue-600 transition-colors`}
       >
         <Edit2 className={iconSize} />
