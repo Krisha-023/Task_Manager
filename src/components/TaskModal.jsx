@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "./constants";
+import { useTaskContext } from "../context/context";
 
-export const TaskModal = ({ task, handleSubmit, onClose }) => {
+export const TaskModal = ({ task, onClose }) => {
+  const { createTask, onEdit } = useTaskContext();
   const [formData, setFormData] = useState({
     title: task?.title || "",
     description: task?.description || "",
@@ -10,6 +12,16 @@ export const TaskModal = ({ task, handleSubmit, onClose }) => {
     owner: task?.owner || "",
     deadline: task?.deadline || "",
   });
+
+  const handleSubmit = () => {
+    if (task) {
+      onEdit(task.id, formData);
+    } else {
+      createTask(formData);
+    }
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
@@ -74,7 +86,7 @@ export const TaskModal = ({ task, handleSubmit, onClose }) => {
 
           <div className="flex gap-3 pt-4">
             <button
-              onClick={() => handleSubmit(formData)}
+              onClick={handleSubmit}
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
             >
               {task ? "Update Task" : "Create Task"}
