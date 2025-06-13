@@ -4,6 +4,7 @@ import { TaskModal } from "./TaskModal";
 import { Filters } from "./Filters";
 import { TaskCard } from "./TaskCard";
 import { TaskContext } from "../context/context";
+import { CalendarView } from "./Calender";
 
 export const TaskManager = () => {
   const [showModal, setShowModal] = useState(false);
@@ -67,11 +68,20 @@ export const TaskManager = () => {
           setPriorityFilter={setPriorityFilter}
         />
 
-        <div className="space-y-4">
-          {filteredTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
-          ))}
-        </div>
+        {currentView === "grid" && (
+          <div className="space-y-4">
+            {filteredTasks.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+          </div>
+        )}
+        {currentView === "calendar" && (
+          <CalendarView
+            tasks={filteredTasks}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        )}
         {showModal && <TaskModal onClose={() => setShowModal(false)} />}
       </div>
     </TaskContext.Provider>
