@@ -5,6 +5,7 @@ import { Filters } from "./Filters";
 import { TaskCard } from "./TaskCard";
 import { TaskContext } from "../context/context";
 import { CalendarView } from "./Calender";
+import { TimeLine } from "./TimeLine";
 
 export const TaskManager = () => {
   const [showModal, setShowModal] = useState(false);
@@ -82,6 +83,7 @@ export const TaskManager = () => {
             onDelete={onDelete}
           />
         )}
+        {currentView === "timeline" && <TimeLine tasks={filteredTasks} />}
         {showModal && <TaskModal onClose={() => setShowModal(false)} />}
       </div>
     </TaskContext.Provider>

@@ -19,3 +19,12 @@ export const getStatusIcon = (status) => {
       return <Clock className="w-4 h-4" />;
   }
 };
+
+export const formatDate = (dateStr) => {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
