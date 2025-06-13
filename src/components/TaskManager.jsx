@@ -3,6 +3,7 @@ import { useState } from "react";
 import { TaskModal } from "./TaskModal";
 import { Filters } from "./Filters";
 import { TaskCard } from "./TaskCard";
+import { TaskContext } from "../context/context";
 
 export const TaskManager = () => {
   const [showModal, setShowModal] = useState(false);
@@ -10,6 +11,7 @@ export const TaskManager = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [currentView, setCurrentView] = useState("grid");
 
   const createTask = (taskData) => {
     const newTask = {
@@ -31,8 +33,13 @@ export const TaskManager = () => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const contextValue = {
+    currentView,
+    setCurrentView,
+  };
+
   return (
-    <>
+    <TaskContext.Provider value={contextValue}>
       <Header onCreateTask={() => setShowModal(true)} />
       <Filters
         searchTerm={search}
@@ -59,6 +66,6 @@ export const TaskManager = () => {
           onClose={() => setShowModal(false)}
         />
       )}
-    </>
+    </TaskContext.Provider>
   );
 };
