@@ -1,4 +1,4 @@
-import { Grid, CalendarDays, List } from "lucide-react";
+import { Grid, CalendarDays, List, Table } from "lucide-react";
 import { useTaskContext } from "../context/context";
 
 export const ViewOptions = () => {
@@ -6,6 +6,7 @@ export const ViewOptions = () => {
     { id: "grid", label: "Grid", icon: Grid },
     { id: "calendar", label: "Calendar", icon: CalendarDays },
     { id: "timeline", label: "Timeline", icon: List },
+    { id: "list", label: "List", icon: Table },
   ];
 
   return (

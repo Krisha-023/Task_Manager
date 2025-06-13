@@ -1,7 +1,7 @@
 import { ArrowUp, ArrowDown, Minus } from "lucide-react";
 
 export const STATUS_OPTIONS = [
-  { value: "todo", label: "To Do", color: "bg-gray-100 text-gray-800" },
+  { value: "todo", label: "To Do", color: "bg-red-50 text-red-700" },
   {
     value: "in-progress",
     label: "In Progress",

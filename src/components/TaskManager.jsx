@@ -6,6 +6,7 @@ import { TaskContext } from "../context/context";
 import { CalendarView } from "./Calender";
 import { TimeLine } from "./TimeLine";
 import { GridView } from "./GridView";
+import { ListView } from "./ListView";
 
 export const TaskManager = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -88,6 +89,7 @@ export const TaskManager = () => {
           />
         )}
         {currentView === "timeline" && <TimeLine tasks={filteredTasks} />}
+        {currentView === "list" && <ListView tasks={filteredTasks} />}
         {showCreateModal && (
           <TaskModal
             onClose={() => setShowCreateModal(false)}
