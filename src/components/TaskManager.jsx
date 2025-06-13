@@ -38,24 +38,36 @@ export const TaskManager = () => {
     setCurrentView,
     tasks,
     setTasks,
-    search,
-    setSearch,
-    statusFilter,
-    setStatusFilter,
-    priorityFilter,
-    setPriorityFilter,
     onEdit,
     onDelete,
     createTask,
   };
 
+  // Filtering logic
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch =
+      search === "" || task.title.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || task.status === statusFilter;
+    const matchesPriority =
+      priorityFilter === "all" || task.priority === priorityFilter;
+    return matchesSearch && matchesStatus && matchesPriority;
+  });
+
   return (
     <TaskContext.Provider value={contextValue}>
       <Header onCreateTask={() => setShowModal(true)} />
-      <Filters />
+      <Filters
+        search={search}
+        setSearch={setSearch}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        priorityFilter={priorityFilter}
+        setPriorityFilter={setPriorityFilter}
+      />
 
       <div className="space-y-4">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <TaskCard key={task.id} task={task} />
         ))}
       </div>
