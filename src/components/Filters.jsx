@@ -3,14 +3,6 @@ import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "./constants";
 import { useTaskContext } from "../context/context";
 
 export const Filters = () => {
-  const {
-    search,
-    setSearch,
-    statusFilter,
-    setStatusFilter,
-    priorityFilter,
-    setPriorityFilter,
-  } = useTaskContext();
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
       <div className="flex flex-wrap gap-4 items-center">
