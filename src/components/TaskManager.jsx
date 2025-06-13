@@ -56,22 +56,24 @@ export const TaskManager = () => {
 
   return (
     <TaskContext.Provider value={contextValue}>
-      <Header onCreateTask={() => setShowModal(true)} />
-      <Filters
-        search={search}
-        setSearch={setSearch}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        priorityFilter={priorityFilter}
-        setPriorityFilter={setPriorityFilter}
-      />
+      <div className="max-w-7xl mx-auto px-2">
+        <Header onCreateTask={() => setShowModal(true)} />
+        <Filters
+          search={search}
+          setSearch={setSearch}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          priorityFilter={priorityFilter}
+          setPriorityFilter={setPriorityFilter}
+        />
 
-      <div className="space-y-4">
-        {filteredTasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        <div className="space-y-4">
+          {filteredTasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+        {showModal && <TaskModal onClose={() => setShowModal(false)} />}
       </div>
-      {showModal && <TaskModal onClose={() => setShowModal(false)} />}
     </TaskContext.Provider>
   );
 };
