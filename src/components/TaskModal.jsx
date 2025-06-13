@@ -74,7 +74,7 @@ export const TaskModal = ({ task, handleSubmit, onClose }) => {
 
           <div className="flex gap-3 pt-4">
             <button
-              onClick={handleSubmit}
+              onClick={() => handleSubmit(formData)}
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
             >
               {task ? "Update Task" : "Create Task"}

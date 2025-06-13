@@ -2,6 +2,7 @@ import { Header } from "./Header";
 import { useState } from "react";
 import { TaskModal } from "./TaskModal";
 import { Filters } from "./Filters";
+import { TaskCard } from "./TaskCard";
 
 export const TaskManager = () => {
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +20,17 @@ export const TaskManager = () => {
     setTasks([...tasks, newTask]);
     setShowModal(false);
   };
+
+  const onEdit = (id, updatedData) => {
+    setTasks(
+      tasks.map((task) => (task.id === id ? { ...task, ...updatedData } : task))
+    );
+  };
+
+  const onDelete = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
   return (
     <>
       <Header onCreateTask={() => setShowModal(true)} />
@@ -30,8 +42,22 @@ export const TaskManager = () => {
         priorityFilter={priorityFilter}
         setPriorityFilter={setPriorityFilter}
       />
+
+      <div className="space-y-4">
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            task={task}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
+      </div>
       {showModal && (
-        <TaskModal onSave={createTask} onClose={() => setShowModal(false)} />
+        <TaskModal
+          handleSubmit={createTask}
+          onClose={() => setShowModal(false)}
+        />
       )}
     </>
   );
