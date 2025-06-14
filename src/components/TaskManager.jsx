@@ -8,7 +8,7 @@ import { TimeLine } from "./TimeLine";
 import { GridView } from "./GridView";
 import { ListView } from "./ListView";
 import { ChartView } from "./ChartView";
-import { KanbanView } from "./Kanban";
+import { CardView } from "./Card";
 import { TaskStatus } from "./TaskStatus";
 
 export const TaskManager = () => {
@@ -77,8 +77,8 @@ export const TaskManager = () => {
         return <ListView tasks={filteredTasks} />;
       case "chart":
         return <ChartView tasks={filteredTasks} />;
-      case "kanban":
-        return <KanbanView tasks={filteredTasks} />;
+      case "card":
+        return <CardView tasks={filteredTasks} />;
       default:
         return null;
     }

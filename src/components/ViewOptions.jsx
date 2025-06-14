@@ -15,7 +15,7 @@ export const ViewOptions = () => {
     { id: "timeline", label: "Timeline", icon: List },
     { id: "list", label: "List", icon: Table },
     { id: "chart", label: "Chart", icon: ChartBar },
-    { id: "kanban", label: "Card", icon: ListCheck },
+    { id: "card", label: "Card", icon: ListCheck },
   ];
 
   return (

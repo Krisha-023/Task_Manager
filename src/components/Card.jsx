@@ -3,7 +3,7 @@ import { STATUS_OPTIONS } from "./constants";
 import { TaskCard } from "./TaskCard";
 import { useTaskContext } from "../context/context";
 
-export const KanbanView = ({ tasks }) => {
+export const CardView = ({ tasks }) => {
   const { setTasks } = useTaskContext();
 
   const onDragEnd = (result) => {
