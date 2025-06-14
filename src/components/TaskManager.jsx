@@ -22,7 +22,7 @@ export const TaskManager = () => {
 
   const createTask = (taskData) => {
     const newTask = {
-      id: Date.now(),
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       ...taskData,
       created: new Date().toISOString().split("T")[0],
     };

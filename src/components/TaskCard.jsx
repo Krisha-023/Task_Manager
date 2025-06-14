@@ -48,16 +48,21 @@ const TaskActions = ({ task, compact = false }) => {
   const iconSize = compact ? "w-3 h-3" : "w-4 h-4";
   const buttonClass = compact ? "text-gray-400 p-1" : "text-gray-400";
 
+  const handleClick = (e, action) => {
+    e.stopPropagation();
+    action();
+  };
+
   return (
     <div className="flex gap-2 ml-2">
       <button
-        onClick={() => handleEditClick(task)}
+        onClick={(e) => handleClick(e, () => handleEditClick(task))}
         className={`${buttonClass} hover:text-blue-600 transition-colors`}
       >
         <Edit2 className={iconSize} />
       </button>
       <button
-        onClick={() => onDelete(task.id)}
+        onClick={(e) => handleClick(e, () => onDelete(task.id))}
         className={`${buttonClass} hover:text-red-600 transition-colors`}
       >
         <Trash2 className={iconSize} />
