@@ -4,7 +4,7 @@ import {
   List,
   Table,
   ChartBar,
-  Kanban,
+  ListCheck,
 } from "lucide-react";
 import { useTaskContext } from "../context/context";
 
@@ -15,7 +15,7 @@ export const ViewOptions = () => {
     { id: "timeline", label: "Timeline", icon: List },
     { id: "list", label: "List", icon: Table },
     { id: "chart", label: "Chart", icon: ChartBar },
-    { id: "kanban", label: "Kanban", icon: Kanban },
+    { id: "kanban", label: "Card", icon: ListCheck },
   ];
 
   return (
