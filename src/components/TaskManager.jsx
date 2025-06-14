@@ -58,6 +58,31 @@ export const TaskManager = () => {
     handleEditClick,
   };
 
+  const renderView = (currentView) => {
+    switch (currentView) {
+      case "grid":
+        return <GridView tasks={filteredTasks} />;
+      case "calendar":
+        return (
+          <CalendarView
+            tasks={filteredTasks}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        );
+      case "timeline":
+        return <TimeLine tasks={filteredTasks} />;
+      case "list":
+        return <ListView tasks={filteredTasks} />;
+      case "chart":
+        return <ChartView tasks={filteredTasks} />;
+      case "kanban":
+        return <KanbanView tasks={filteredTasks} />;
+      default:
+        return null;
+    }
+  };
+
   // Filtering logic
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
@@ -81,18 +106,7 @@ export const TaskManager = () => {
           priorityFilter={priorityFilter}
           setPriorityFilter={setPriorityFilter}
         />
-        {currentView === "grid" && <GridView tasks={filteredTasks} />}
-        {currentView === "calendar" && (
-          <CalendarView
-            tasks={filteredTasks}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
-        )}
-        {currentView === "timeline" && <TimeLine tasks={filteredTasks} />}
-        {currentView === "list" && <ListView tasks={filteredTasks} />}
-        {currentView === "chart" && <ChartView tasks={filteredTasks} />}
-        {currentView === "kanban" && <KanbanView tasks={filteredTasks} />}
+        {renderView(currentView)}
         {showCreateModal && (
           <TaskModal
             onClose={() => setShowCreateModal(false)}
