@@ -3,9 +3,9 @@ import { ViewOptions } from "./ViewOptions";
 
 export const Header = ({ onCreateTask }) => {
   return (
-    <div className="flex justify-between items-center mb-8">
-      <div className="flex items-center gap-4">
-        <h1 className="text-3xl font-bold text-gray-900">Task Manager</h1>
+    <div className="flex items-center justify-between gap-4 mb-8 w-full">
+      <h1 className="text-3xl font-bold text-gray-900">Task Manager</h1>
+      <div className="flex-1 flex justify-center">
         <ViewOptions />
       </div>
       <button
