@@ -7,6 +7,8 @@ import { CalendarView } from "./Calender";
 import { TimeLine } from "./TimeLine";
 import { GridView } from "./GridView";
 import { ListView } from "./ListView";
+import { ChartView } from "./ChartView";
+import { KanbanView } from "./Kanban";
 
 export const TaskManager = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -79,7 +81,6 @@ export const TaskManager = () => {
           priorityFilter={priorityFilter}
           setPriorityFilter={setPriorityFilter}
         />
-
         {currentView === "grid" && <GridView tasks={filteredTasks} />}
         {currentView === "calendar" && (
           <CalendarView
@@ -90,6 +91,8 @@ export const TaskManager = () => {
         )}
         {currentView === "timeline" && <TimeLine tasks={filteredTasks} />}
         {currentView === "list" && <ListView tasks={filteredTasks} />}
+        {currentView === "chart" && <ChartView tasks={filteredTasks} />}
+        {currentView === "kanban" && <KanbanView tasks={filteredTasks} />}
         {showCreateModal && (
           <TaskModal
             onClose={() => setShowCreateModal(false)}
