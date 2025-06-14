@@ -9,6 +9,7 @@ import { GridView } from "./GridView";
 import { ListView } from "./ListView";
 import { ChartView } from "./ChartView";
 import { KanbanView } from "./Kanban";
+import { TaskStatus } from "./TaskStatus";
 
 export const TaskManager = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -106,6 +107,7 @@ export const TaskManager = () => {
           priorityFilter={priorityFilter}
           setPriorityFilter={setPriorityFilter}
         />
+        <TaskStatus tasks={filteredTasks} />
         {renderView(currentView)}
         {showCreateModal && (
           <TaskModal
