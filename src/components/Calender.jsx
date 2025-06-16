@@ -125,7 +125,7 @@ const CalendarHeader = ({
 
 const CalendarDay = ({ day, tasks, onEdit, onDelete }) => (
   <div className="bg-white p-1 min-h-24 border-r border-b border-gray-100">
-    {day && (
+    {day ? (
       <>
         <div className="text-sm font-medium text-gray-900 mb-1">
           {day.getDate()}
@@ -140,13 +140,13 @@ const CalendarDay = ({ day, tasks, onEdit, onDelete }) => (
               onDelete={onDelete}
             />
           ))}
-          {tasks.length > 3 && (
+          {tasks.length > 3 ? (
             <div className="text-xs text-gray-500 text-center">
               +{tasks.length - 3} more
             </div>
-          )}
+          ) : null}
         </div>
       </>
-    )}
+    ) : null}
   </div>
 );

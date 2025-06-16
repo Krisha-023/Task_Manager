@@ -25,7 +25,6 @@ export const TaskManager = () => {
     const newTask = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       ...taskData,
-      created: new Date().toISOString().split("T")[0],
     };
     setTasks([...tasks, newTask]);
     setShowCreateModal(false);
@@ -109,22 +108,21 @@ export const TaskManager = () => {
         />
         <TaskStatus tasks={filteredTasks} />
         {renderView(currentView)}
-        {showCreateModal && (
+        {showCreateModal ? (
           <TaskModal
             onClose={() => setShowCreateModal(false)}
             onSubmit={createTask}
           />
-        )}
-        {showUpdateModal && editingTask && (
+        ) : null}
+        {showUpdateModal ? (
           <TaskModal
             task={editingTask}
-            onSave={onEdit}
             onClose={() => {
               setShowUpdateModal(false);
               setEditingTask(null);
             }}
           />
-        )}
+        ) : null}
       </div>
     </TaskContext.Provider>
   );
