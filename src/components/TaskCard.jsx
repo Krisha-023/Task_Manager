@@ -2,6 +2,7 @@ import { getPriorityIcon, getStatusIcon } from "../utils/utils";
 import { STATUS_OPTIONS } from "./constants";
 import { Edit2, Trash2, User, Calendar } from "lucide-react";
 import { useTaskContext } from "../context/context";
+import { useCallback } from "react";
 
 export const TaskCard = ({ task, compact = false }) => {
   const statusConfig = STATUS_OPTIONS.find((s) => s.value === task.status);
@@ -48,21 +49,25 @@ const TaskActions = ({ task, compact = false }) => {
   const iconSize = compact ? "w-3 h-3" : "w-4 h-4";
   const buttonClass = compact ? "text-gray-400 p-1" : "text-gray-400";
 
-  const handleClick = (e, action) => {
-    e.stopPropagation();
-    action();
-  };
+  const handleEdit = useCallback(
+    () => handleEditClick(task),
+    [handleEditClick, task]
+  );
+  const handleDelete = useCallback(
+    () => onDelete(task.id),
+    [onDelete, task.id]
+  );
 
   return (
     <div className="flex gap-2 ml-2">
       <button
-        onClick={(e) => handleClick(e, () => handleEditClick(task))}
+        onClick={handleEdit}
         className={`${buttonClass} hover:text-blue-600 transition-colors`}
       >
         <Edit2 className={iconSize} />
       </button>
       <button
-        onClick={(e) => handleClick(e, () => onDelete(task.id))}
+        onClick={handleDelete}
         className={`${buttonClass} hover:text-red-600 transition-colors`}
       >
         <Trash2 className={iconSize} />
