@@ -1,22 +1,34 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "./constants";
 import { useTaskContext } from "../context/context";
+import {
+  TaskModalProps,
+  FormProps,
+  TaskStatus,
+  TaskPriority,
+} from "../types";
 
-export const TaskModal = ({ task, onClose }) => {
+export const TaskModal: React.FC<TaskModalProps> = ({
+  task,
+  onClose,
+  onSubmit,
+}) => {
   const { createTask, onEdit } = useTaskContext();
   const [formData, setFormData] = useState({
     title: task?.title || "",
     description: task?.description || "",
-    status: task?.status || "todo",
-    priority: task?.priority || "low",
+    status: task?.status || ("todo" as TaskStatus),
+    priority: task?.priority || ("low" as TaskPriority),
     owner: task?.owner || "",
     deadline: task?.deadline || "",
   });
 
   const handleSubmit = () => {
-    if (task) {
+    if (task && onEdit) {
       onEdit(task.id, formData);
-    } else {
+    } else if (onSubmit) {
+      onSubmit(formData);
+    } else if (createTask) {
       createTask(formData);
     }
     onClose();
@@ -25,7 +37,6 @@ export const TaskModal = ({ task, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
-       
         <h2 className="text-xl font-semibold mb-4">
           {task ? "Edit Task" : "Create New Task"}
         </h2>
@@ -54,7 +65,9 @@ export const TaskModal = ({ task, onClose }) => {
               label="Status"
               type="select"
               value={formData.status}
-              onChange={(value) => setFormData({ ...formData, status: value })}
+              onChange={(value) =>
+                setFormData({ ...formData, status: value as TaskStatus })
+              }
               options={STATUS_OPTIONS}
             />
 
@@ -63,7 +76,7 @@ export const TaskModal = ({ task, onClose }) => {
               type="select"
               value={formData.priority}
               onChange={(value) =>
-                setFormData({ ...formData, priority: value })
+                setFormData({ ...formData, priority: value as TaskPriority })
               }
               options={PRIORITY_OPTIONS}
             />
@@ -105,7 +118,14 @@ export const TaskModal = ({ task, onClose }) => {
   );
 };
 
-const Form = ({ label, type, value, onChange, options, required }) => {
+const Form: React.FC<FormProps> = ({
+  label,
+  type,
+  value,
+  onChange,
+  options,
+  required,
+}) => {
   const formClass =
     "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
 
@@ -119,7 +139,7 @@ const Form = ({ label, type, value, onChange, options, required }) => {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={formClass}
-          rows="3"
+          rows={3}
           required={required}
         />
       ) : type === "select" ? (
@@ -128,7 +148,7 @@ const Form = ({ label, type, value, onChange, options, required }) => {
           onChange={(e) => onChange(e.target.value)}
           className={formClass}
         >
-          {options.map((option) => (
+          {options?.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

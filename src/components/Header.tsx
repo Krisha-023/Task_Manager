@@ -1,7 +1,9 @@
+import React from "react";
 import { Plus } from "lucide-react";
 import { ViewOptions } from "./ViewOptions";
+import { HeaderProps } from "../types";
 
-export const Header = ({ onCreateTask }) => {
+export const Header: React.FC<HeaderProps> = ({ onCreateTask }) => {
   return (
     <div className="flex items-center justify-between gap-4 mb-8 w-full">
       <h1 className="text-3xl font-bold text-gray-900">Task Manager</h1>
