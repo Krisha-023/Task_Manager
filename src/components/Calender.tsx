@@ -1,10 +1,35 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { TaskCard } from "./TaskCard";
+import { Task } from "../types";
 
-export const CalendarView = ({ tasks, onEdit, onDelete }) => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+interface CalendarViewProps {
+  tasks: Task[];
+  onEdit?: (task: Task) => void;
+  onDelete?: (id: string) => void;
+}
 
-  const getDaysInMonth = (date) => {
+interface CalendarHeaderProps {
+  currentDate: Date;
+  monthNames: string[];
+  onPrevMonth: () => void;
+  onNextMonth: () => void;
+}
+
+interface CalendarDayProps {
+  day: Date | null;
+  tasks: Task[];
+  onEdit?: (task: Task) => void;
+  onDelete?: (id: string) => void;
+}
+
+export const CalendarView: React.FC<CalendarViewProps> = ({
+  tasks,
+  onEdit,
+  onDelete,
+}) => {
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
+  const getDaysInMonth = (date: Date): (Date | null)[] => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
@@ -12,7 +37,7 @@ export const CalendarView = ({ tasks, onEdit, onDelete }) => {
     const daysInMonth = lastDay.getDate();
     const startDay = firstDay.getDay();
 
-    const days = [];
+    const days: (Date | null)[] = [];
 
     for (let i = 0; i < startDay; i++) {
       days.push(null);
@@ -25,7 +50,7 @@ export const CalendarView = ({ tasks, onEdit, onDelete }) => {
     return days;
   };
 
-  const getTasksForDate = (date) => {
+  const getTasksForDate = (date: Date | null): Task[] => {
     if (!date) return [];
     const dateStr =
       date.getFullYear() +
@@ -53,13 +78,13 @@ export const CalendarView = ({ tasks, onEdit, onDelete }) => {
   ];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const nextMonth = () => {
+  const nextMonth = (): void => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
     );
   };
 
-  const prevMonth = () => {
+  const prevMonth = (): void => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
     );
@@ -98,7 +123,7 @@ export const CalendarView = ({ tasks, onEdit, onDelete }) => {
   );
 };
 
-const CalendarHeader = ({
+const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   currentDate,
   monthNames,
   onPrevMonth,
@@ -123,7 +148,12 @@ const CalendarHeader = ({
   </div>
 );
 
-const CalendarDay = ({ day, tasks, onEdit, onDelete }) => (
+const CalendarDay: React.FC<CalendarDayProps> = ({
+  day,
+  tasks,
+  onEdit,
+  onDelete,
+}) => (
   <div className="bg-white p-1 min-h-24 border-r border-b border-gray-100">
     {day ? (
       <>

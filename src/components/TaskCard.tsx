@@ -1,10 +1,21 @@
+import React, { useCallback } from "react";
 import { getPriorityIcon, getStatusIcon } from "../utils/utils";
 import { STATUS_OPTIONS } from "./constants";
 import { Edit2, Trash2, User, Calendar } from "lucide-react";
 import { useTaskContext } from "../context/context";
-import { useCallback } from "react";
+import { Task, StatusOption } from "../types";
 
-export const TaskCard = ({ task, compact = false }) => {
+interface TaskCardProps {
+  task: Task;
+  compact?: boolean;
+  onEdit?: (task: Task) => void;
+  onDelete?: (id: string) => void;
+}
+
+export const TaskCard: React.FC<TaskCardProps> = ({
+  task,
+  compact = false,
+}) => {
   const statusConfig = STATUS_OPTIONS.find((s) => s.value === task.status);
 
   if (compact) {
@@ -44,7 +55,12 @@ export const TaskCard = ({ task, compact = false }) => {
   );
 };
 
-const TaskActions = ({ task, compact = false }) => {
+interface TaskActionsProps {
+  task: Task;
+  compact?: boolean;
+}
+
+const TaskActions: React.FC<TaskActionsProps> = ({ task, compact = false }) => {
   const { handleEditClick, onDelete } = useTaskContext();
   const iconSize = compact ? "w-3 h-3" : "w-4 h-4";
   const buttonClass = compact ? "text-gray-400 p-1" : "text-gray-400";
@@ -76,7 +92,12 @@ const TaskActions = ({ task, compact = false }) => {
   );
 };
 
-const TaskData = ({ task, statusConfig }) => (
+interface TaskDataProps {
+  task: Task;
+  statusConfig?: StatusOption;
+}
+
+const TaskData: React.FC<TaskDataProps> = ({ task, statusConfig }) => (
   <div className="flex items-center gap-4 text-sm">
     <div className="flex items-center gap-1">
       {getStatusIcon(task.status)}

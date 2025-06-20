@@ -1,14 +1,28 @@
+import React from "react";
 import { TaskCard } from "./TaskCard";
 import { formatDate } from "../utils/utils";
-import { useTaskContext } from "../context/context";
+import { Task } from "../types";
 
-export const TimeLine = ({ tasks }) => {
-  const { onEdit, onDelete } = useTaskContext();
-  const getTimelineData = () => {
+interface TimeLineProps {
+  tasks: Task[];
+}
+
+interface TimelineData {
+  date: string;
+  tasks: Task[];
+}
+
+interface TimelineItemProps {
+  date: string;
+  tasks: Task[];
+}
+
+export const TimeLine: React.FC<TimeLineProps> = ({ tasks }) => {
+  const getTimelineData = (): TimelineData[] => {
     const sortedTasks = [...tasks].sort(
-      (a, b) => new Date(a.deadline) - new Date(b.deadline)
+      (a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime()
     );
-    const grouped = {};
+    const grouped: Record<string, Task[]> = {};
 
     sortedTasks.forEach((task) => {
       const date = task.deadline;
@@ -34,19 +48,13 @@ export const TimeLine = ({ tasks }) => {
   return (
     <div className="space-y-6">
       {timelineData.map(({ date, tasks }) => (
-        <TimelineItem
-          key={date}
-          date={date}
-          tasks={tasks}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
+        <TimelineItem key={date} date={date} tasks={tasks} />
       ))}
     </div>
   );
 };
 
-const TimelineItem = ({ date, tasks, onEdit, onDelete }) => (
+const TimelineItem: React.FC<TimelineItemProps> = ({ date, tasks }) => (
   <div className="relative">
     <div className="flex items-start">
       <div className="flex flex-col items-center mr-4">
@@ -62,12 +70,7 @@ const TimelineItem = ({ date, tasks, onEdit, onDelete }) => (
 
           <div className="space-y-3">
             {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
+              <TaskCard key={task.id} task={task} />
             ))}
           </div>
         </div>

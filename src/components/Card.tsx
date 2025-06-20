@@ -1,12 +1,27 @@
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import React from "react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import { STATUS_OPTIONS } from "./constants";
 import { TaskCard } from "./TaskCard";
 import { useTaskContext } from "../context/context";
+import { Task, TaskStatus } from "../types";
 
-export const CardView = ({ tasks }) => {
+interface CardViewProps {
+  tasks: Task[];
+}
+
+interface TasksByStatus {
+  [key: string]: Task[];
+}
+
+export const CardView: React.FC<CardViewProps> = ({ tasks }) => {
   const { setTasks } = useTaskContext();
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: DropResult): void => {
     const { destination, source, draggableId } = result;
     if (!destination) {
       return;
@@ -29,16 +44,19 @@ export const CardView = ({ tasks }) => {
 
     const updatedTasks = tasks.map((task) =>
       task.id.toString() === draggableId
-        ? { ...task, status: destination.droppableId }
+        ? { ...task, status: destination.droppableId as TaskStatus }
         : task
     );
     setTasks(updatedTasks);
   };
 
-  const tasksByStatus = STATUS_OPTIONS.reduce((acc, { value }) => {
-    acc[value] = tasks.filter((task) => task.status === value);
-    return acc;
-  }, {});
+  const tasksByStatus: TasksByStatus = STATUS_OPTIONS.reduce(
+    (acc, { value }) => {
+      acc[value] = tasks.filter((task) => task.status === value);
+      return acc;
+    },
+    {} as TasksByStatus
+  );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
