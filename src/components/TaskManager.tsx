@@ -10,44 +10,64 @@ import { ListView } from "./ListView";
 import { ChartView } from "./ChartView";
 import { CardView } from "./Card";
 import { TaskStatus } from "./TaskStatus";
+import { Task, ViewType, TaskContextType } from "../types";
 
 export const TaskManager = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
-  const [currentView, setCurrentView] = useState("grid");
-  const [editingTask, setEditingTask] = useState(null);
+  const [currentView, setCurrentView] = useState<ViewType>("grid");
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
-  const createTask = (taskData) => {
-    const newTask = {
+  const createTask = (taskData: Omit<Task, "id">) => {
+    const newTask: Task = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       ...taskData,
     };
-    setTasks([...tasks, newTask]);
+    setTasks((prevTasks) => [...prevTasks, newTask]);
     setShowCreateModal(false);
   };
 
-  const onEdit = (id, updatedData) => {
-    setTasks(
-      tasks.map((task) => (task.id === id ? { ...task, ...updatedData } : task))
+  // Helper function that can handle both create and update scenarios
+  const handleModalSubmit = (taskData: Omit<Task, "id"> | Partial<Task>) => {
+    if (editingTask) {
+      // Update scenario
+      onEdit(editingTask.id, taskData as Partial<Task>);
+    } else {
+      // Create scenario
+      createTask(taskData as Omit<Task, "id">);
+    }
+  };
+
+  const onEdit = (id: string, updatedData: Partial<Task>) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, ...updatedData } : task
+      )
     );
     setShowUpdateModal(false);
     setEditingTask(null);
   };
 
-  const onDelete = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const onDelete = (id: string) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const handleEditClick = (task) => {
+  const handleEditClick = (task: Task) => {
     setEditingTask(task);
     setShowUpdateModal(true);
   };
 
-  const contextValue = {
+  // Helper function to handle onEdit for calendar view (which expects a Task object)
+  const handleCalendarEdit = (task: Task) => {
+    setEditingTask(task);
+    setShowUpdateModal(true);
+  };
+
+  const contextValue: TaskContextType = {
     currentView,
     setCurrentView,
     tasks,
@@ -58,15 +78,28 @@ export const TaskManager = () => {
     handleEditClick,
   };
 
-  const renderView = (currentView) => {
-    switch (currentView) {
+  // Filtering logic
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch =
+      search === "" || task.title.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || task.status === statusFilter;
+    const matchesPriority =
+      priorityFilter === "all" || task.priority === priorityFilter;
+    return matchesSearch && matchesStatus && matchesPriority;
+  });
+
+  const renderView = (view: ViewType) => {
+    switch (view) {
       case "grid":
-        return <GridView tasks={filteredTasks} />;
+        return (
+          <GridView tasks={filteredTasks} onEdit={onEdit} onDelete={onDelete} />
+        );
       case "calendar":
         return (
           <CalendarView
             tasks={filteredTasks}
-            onEdit={onEdit}
+            onEdit={handleCalendarEdit}
             onDelete={onDelete}
           />
         );
@@ -83,17 +116,6 @@ export const TaskManager = () => {
     }
   };
 
-  // Filtering logic
-  const filteredTasks = tasks.filter((task) => {
-    const matchesSearch =
-      search === "" || task.title.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" || task.status === statusFilter;
-    const matchesPriority =
-      priorityFilter === "all" || task.priority === priorityFilter;
-    return matchesSearch && matchesStatus && matchesPriority;
-  });
-
   return (
     <TaskContext.Provider value={contextValue}>
       <div className="max-w-7xl mx-auto px-2">
@@ -108,21 +130,22 @@ export const TaskManager = () => {
         />
         <TaskStatus tasks={filteredTasks} />
         {renderView(currentView)}
-        {showCreateModal ? (
+        {showCreateModal && (
           <TaskModal
             onClose={() => setShowCreateModal(false)}
-            onSubmit={createTask}
+            onSubmit={handleModalSubmit}
           />
-        ) : null}
-        {showUpdateModal ? (
+        )}
+        {showUpdateModal && editingTask && (
           <TaskModal
             task={editingTask}
             onClose={() => {
               setShowUpdateModal(false);
               setEditingTask(null);
             }}
+            onSubmit={handleModalSubmit}
           />
-        ) : null}
+        )}
       </div>
     </TaskContext.Provider>
   );

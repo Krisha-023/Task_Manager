@@ -1,21 +1,31 @@
+import React from "react";
 import { useTaskContext } from "../context/context";
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "./constants";
+import { Task, StatusOption, PriorityOption } from "../types";
 
-export const ListView = ({ tasks }) => {
+interface ListViewProps {
+  tasks: Task[];
+}
+
+export const ListView: React.FC<ListViewProps> = ({ tasks }) => {
   const { handleEditClick } = useTaskContext();
 
-  const getStatusConfig = (status) => {
+  const getStatusConfig = (status: string): StatusOption => {
     return (
       STATUS_OPTIONS.find((s) => s.value === status) || {
+        value: status as any,
         label: status,
         color: "bg-gray-100 text-gray-700",
       }
     );
   };
 
-  const getPriorityConfig = (priority) => {
+  const getPriorityConfig = (
+    priority: string
+  ): PriorityOption | { value: any; label: string; color: string } => {
     return (
       PRIORITY_OPTIONS.find((p) => p.value === priority) || {
+        value: priority as any,
         label: priority,
         color: "text-gray-700",
       }

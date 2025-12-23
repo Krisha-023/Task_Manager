@@ -5,11 +5,24 @@ import {
   Table,
   ChartBar,
   ListCheck,
+  LucideIcon,
 } from "lucide-react";
 import { useTaskContext } from "../context/context";
+import { ViewType } from "../types";
+
+interface ViewOption {
+  id: ViewType;
+  label: string;
+  icon: LucideIcon;
+}
+
+interface ViewToggleButtonProps {
+  view: ViewOption;
+  IconComponent: LucideIcon;
+}
 
 export const ViewOptions = () => {
-  const views = [
+  const views: ViewOption[] = [
     { id: "grid", label: "Grid", icon: Grid },
     { id: "calendar", label: "Calendar", icon: CalendarDays },
     { id: "timeline", label: "Timeline", icon: List },
@@ -34,7 +47,10 @@ export const ViewOptions = () => {
   );
 };
 
-const ViewToggleButton = ({ view, IconComponent }) => {
+const ViewToggleButton: React.FC<ViewToggleButtonProps> = ({
+  view,
+  IconComponent,
+}) => {
   const { currentView, setCurrentView } = useTaskContext();
 
   return (

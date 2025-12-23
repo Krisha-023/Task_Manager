@@ -1,7 +1,18 @@
-import { AlertCircle, CheckCircle, Clock } from "lucide-react";
+import React from "react";
+import { AlertCircle, CheckCircle, Clock, LucideIcon } from "lucide-react";
+import { TaskStatusProps } from "../types";
 
-export const TaskStatus = ({ tasks }) => {
-  const status = [
+interface StatusItem {
+  label: string;
+  value: number;
+  color: string;
+  bgColor: string;
+  iconColor: string;
+  icon: LucideIcon;
+}
+
+export const TaskStatus: React.FC<TaskStatusProps> = ({ tasks }) => {
+  const status: StatusItem[] = [
     {
       label: "Total Tasks",
       value: tasks.length,
@@ -38,14 +49,18 @@ export const TaskStatus = ({ tasks }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      {status.map((status, index) => (
-        <StatCard key={index} status={status} />
+      {status.map((statusItem, index) => (
+        <StatCard key={index} status={statusItem} />
       ))}
     </div>
   );
 };
 
-const StatCard = ({ status }) => {
+interface StatCardProps {
+  status: StatusItem;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ status }) => {
   const IconComponent = status.icon;
 
   return (

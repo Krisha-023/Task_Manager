@@ -1,7 +1,9 @@
+import React from "react";
 import { Search, Filter } from "lucide-react";
 import { STATUS_OPTIONS, PRIORITY_OPTIONS } from "./constants";
+import { FilterProps } from "../types";
 
-export const Filters = ({
+export const Filters: React.FC<FilterProps> = ({
   search,
   setSearch,
   statusFilter,
@@ -26,7 +28,12 @@ export const Filters = ({
   );
 };
 
-const SearchBar = ({ search, setSearch }) => (
+interface SearchBarProps {
+  search: string;
+  setSearch: (search: string) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ search, setSearch }) => (
   <div className="flex items-center gap-2 flex-1 min-w-[180px]">
     <Search className="w-5 h-5 text-gray-400" />
     <input
@@ -39,7 +46,15 @@ const SearchBar = ({ search, setSearch }) => (
   </div>
 );
 
-const StatusFilter = ({ statusFilter, setStatusFilter }) => (
+interface StatusFilterProps {
+  statusFilter: string;
+  setStatusFilter: (status: string) => void;
+}
+
+const StatusFilter: React.FC<StatusFilterProps> = ({
+  statusFilter,
+  setStatusFilter,
+}) => (
   <div className="flex items-center gap-2 flex-1 min-w-[160px]">
     <Filter className="w-5 h-5 text-gray-400" />
     <select
@@ -57,7 +72,15 @@ const StatusFilter = ({ statusFilter, setStatusFilter }) => (
   </div>
 );
 
-const PriorityFilter = ({ priorityFilter, setPriorityFilter }) => (
+interface PriorityFilterProps {
+  priorityFilter: string;
+  setPriorityFilter: (priority: string) => void;
+}
+
+const PriorityFilter: React.FC<PriorityFilterProps> = ({
+  priorityFilter,
+  setPriorityFilter,
+}) => (
   <div className="flex items-center gap-2 flex-1 min-w-[140px]">
     <span className="w-5 h-5" />
     <select
